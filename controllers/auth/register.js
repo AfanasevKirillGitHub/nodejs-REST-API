@@ -14,8 +14,6 @@ const register = async (req, res) => {
   newUser.save();
 
   res.status(201).json({
-    status: "success",
-    code: 201,
     ResponseBody: {
       user: {
         name,
