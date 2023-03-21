@@ -2,7 +2,11 @@ const express = require("express");
 
 const { auth, upload, validation, ctrlWrapper } = require("../../middlewares");
 const { auth: ctrl } = require("../../controllers");
-const { joiRegisterSchema, joiLoginSchema } = require("../../models/user");
+const {
+  joiRegisterSchema,
+  joiLoginSchema,
+  joiVerifyEmailSchema,
+} = require("../../models/user");
 
 const router = express.Router();
 
@@ -24,6 +28,14 @@ router.patch(
   auth,
   upload.single("avatar"),
   ctrlWrapper(ctrl.updateAvatar)
+);
+
+router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
+
+router.post(
+  "/verify",
+  validation(joiVerifyEmailSchema),
+  ctrlWrapper(ctrl.resendVerifyEmail)
 );
 
 module.exports = router;
